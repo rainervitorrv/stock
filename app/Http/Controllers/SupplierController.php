@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SupplierController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List
      */
     public function index()
     {
@@ -18,7 +18,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show
      */
     public function create()
     {
@@ -26,16 +26,54 @@ class SupplierController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store
      */
-    public function store(SupplierRequest $request, Supplier $fornecedor)
+    public function store(Request $request)
     {
-        $fornecedor->save($request->validated());
+        $attributes = $request->validate(
+            [
+                'name_fantasy'  => 'required|string|max:255',
+                'business_name' => 'nullable|string|max:255',
+                'cpf_cnpj'      => 'required|string|min:11|max:14|unique:fornecedores',
+                'type'          => 'required|in:Pessoa Física,Pessoa Jurídica',
+                'email'         => 'nullable|email|max:255',
+                'phone'         => 'nullable|string|max:255',
+                'address'       => 'string|max:255',
+                'cep'           => 'nullable|string|max:9',
+                'number'        => 'nullable|string|max:10',
+                'complement'    => 'nullable|string|max:255',
+                'neighborhood'  => 'required|string|max:255',
+                'city'          => 'required|string|max:255',
+                'state'         => 'required|string|max:255',
+                'country'       => 'required|string|max:255',
+            ],
+            [
+                'name_fantasy.required'  => 'O Nome Fantasia é obrigatório.',
+                'name_fantasy.max'       => 'O Nome Fantasia não pode ter mais que 255 caracteres.',
+                'business_name.max'      => 'A Razão Social não pode ter mais que 255 caracteres.',
+                'cpf_cnpj.required'      => 'O CPF/CNPJ é obrigatório.',
+                'cpf_cnpj.min'           => 'O CPF/CNPJ deve ter no mínimo 11 caracteres.',
+                'cpf_cnpj.max'           => 'O CPF/CNPJ deve ter no máximo 14 caracteres.',
+                'email.required'         => 'O E-mail é obrigatório.',
+                'email.email'            => 'O E-mail deve ser um endereço válido.',
+                'phone.required'         => 'O Telefone é obrigatório.',
+                'phone.regex'            => 'O Telefone deve estar no formato 000.000.0000.',
+                'address.required'       => 'O Endereço é obrigatório.',
+                'address.max'            => 'O Endereço não pode ter mais que 255 caracteres.',
+                'number.max'             => 'O Número não pode ter mais que 10 caracteres.',
+                'neighborhood.required'  => 'O Bairro é obrigatório.',
+                'city.required'          => 'A Cidade é obrigatória.',
+                'state.required'         => 'O Estado é obrigatório.',
+                'country.required'       => 'O País é obrigatório.',
+            ]
+        );
+
+        Supplier::create($attributes);
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor cadastrado com sucesso!');
     }
 
     /**
-     * Display the specified resource.
+     * Show
      */
     public function show(Supplier $fornecedor)
     {
@@ -43,7 +81,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Edit
      */
     public function edit(Supplier $fornecedor)
     {
@@ -51,16 +89,54 @@ class SupplierController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update
      */
-    public function update(SupplierRequest $request, Supplier $fornecedor)
+    public function update(Request $request, Supplier $fornecedor)
     {
-        $fornecedor->update($request->validated());
+        $attributes = $request->validate(
+            [
+                'name_fantasy'  => 'required|string|max:255',
+                'business_name' => 'nullable|string|max:255',
+                'cpf_cnpj'      => 'required|string|min:11|max:14',
+                'type'          => 'required|in:Pessoa Física,Pessoa Jurídica',
+                'email'         => 'nullable|email|max:255',
+                'phone'         => 'nullable|string|max:255',
+                'address'       => 'string|max:255',
+                'cep'           => 'nullable|string|max:9',
+                'number'        => 'nullable|string|max:10',
+                'complement'    => 'nullable|string|max:255',
+                'neighborhood'  => 'required|string|max:255',
+                'city'          => 'required|string|max:255',
+                'state'         => 'required|string|max:255',
+                'country'       => 'required|string|max:255',
+            ],
+            [
+                'name_fantasy.required'  => 'O Nome Fantasia é obrigatório.',
+                'name_fantasy.max'       => 'O Nome Fantasia não pode ter mais que 255 caracteres.',
+                'business_name.max'      => 'A Razão Social não pode ter mais que 255 caracteres.',
+                'cpf_cnpj.required'      => 'O CPF/CNPJ é obrigatório.',
+                'cpf_cnpj.min'           => 'O CPF/CNPJ deve ter no mínimo 11 caracteres.',
+                'cpf_cnpj.max'           => 'O CPF/CNPJ deve ter no máximo 14 caracteres.',
+                'email.required'         => 'O E-mail é obrigatório.',
+                'email.email'            => 'O E-mail deve ser um endereço válido.',
+                'phone.required'         => 'O Telefone é obrigatório.',
+                'phone.regex'            => 'O Telefone deve estar no formato 000.000.0000.',
+                'address.required'       => 'O Endereço é obrigatório.',
+                'address.max'            => 'O Endereço não pode ter mais que 255 caracteres.',
+                'number.max'             => 'O Número não pode ter mais que 10 caracteres.',
+                'neighborhood.required'  => 'O Bairro é obrigatório.',
+                'city.required'          => 'A Cidade é obrigatória.',
+                'state.required'         => 'O Estado é obrigatório.',
+                'country.required'       => 'O País é obrigatório.',
+            ]
+        );
+
+        $fornecedor->update($attributes);
         return redirect()->route('fornecedores.index')->with('success', 'Fornecedor atualizado com sucesso!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy
      */
     public function destroy(string $id)
     {

@@ -32,6 +32,13 @@
                 value="{{ $fornecedor->cpf_cnpj }}" required />
         </div>
         <div>
+            <x-form.form-label for="type">Tipo</x-form.form-label>
+            <x-form-error name="type" />
+            <input type="text" readonly id="type"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed"
+                value="{{ $fornecedor->type }}" required />
+        </div>
+        <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">E-mail</label>
             <input type="email" readonly id="email"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed"
@@ -85,7 +92,7 @@
                     value="{{ $fornecedor->city }}" required />
             </div>
         </div>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
+        <div class="grid gap-6 mb-6 md:grid-cols-3">
             <div>
                 <label for="state" class="block mb-2 text-sm font-medium text-gray-900">Estado</label>
                 <input type="text" readonly id="state"
@@ -97,6 +104,12 @@
                 <input type="text" readonly id="country"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed"
                     value="{{ $fornecedor->country }}" required />
+            </div>
+            <div>
+                <x-form.form-label for="cep" class="block mb-2 text-sm font-medium text-gray-900">CEP</x-form.form-label>
+                <x-form.form-input id="cep" name="cep" class="cursor-not-allowed"
+                    value="{{ $fornecedor->cep }}" required />
+                <x-form-error name="cep" />
             </div>
         </div>
     </div>

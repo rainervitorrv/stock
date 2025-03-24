@@ -40,6 +40,14 @@
             <x-form-error name="cpf_cnpj" />
         </div>
         <div>
+            <x-form.form-label for="type">Tipo</x-form.form-label>
+            <x-form-error name="type" />
+            <select name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                <option value="Pessoa Física" {{ old('tipo') == 'Pessoa Física' ? 'selected' : '' }}>Pessoa Física</option>
+                <option value="Pessoa Jurídica" {{ old('tipo') == 'Pessoa Jurídica' ? 'selected' : '' }}>Pessoa Jurídica</option>
+            </select>
+        </div>
+        <div>
             <x-form.form-label for="email">E-mail</x-form.form-label>
             <x-form.form-input type="email" id="email" name="email"
                 value="{{ old('email') }}" />
@@ -92,7 +100,7 @@
                 <x-form-error name="city" />
             </div>
         </div>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
+        <div class="grid gap-6 mb-6 md:grid-cols-3">
             <div>
                 <x-form.form-label for="state">Estado</x-form.form-label>
                 <x-form.form-input type="text" id="state" name="state"
@@ -101,9 +109,15 @@
             </div>
             <div>
                 <x-form.form-label for="country" class="block mb-2 text-sm font-medium text-gray-900">País</x-form.form-label>
-                <x-form.form-input id="country" name="country"
-                    value="{{ old('country') }}" required />
+                <x-form.form-input id="country" name="country" value="Brasil"
+                 required />
                 <x-form-error name="country" />
+            </div>
+            <div>
+                <x-form.form-label for="cep" class="block mb-2 text-sm font-medium text-gray-900">CEP</x-form.form-label>
+                <x-form.form-input id="cep" name="cep"
+                    value="{{ old('fornecedor->cep') }}" required maxlength="9" />
+                <x-form-error name="cep" />
             </div>
         </div>
     </div>

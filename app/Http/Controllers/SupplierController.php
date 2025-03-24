@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SupplierRequest;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -11,7 +13,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $fornecedores = Supplier::latest()->paginate(10);
+        return view('fornecedores.index', compact('fornecedores'));
     }
 
     /**
@@ -19,39 +22,41 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('fornecedores.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request, Supplier $fornecedor)
     {
-        //
+        $fornecedor->save($request->validated());
+        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor cadastrado com sucesso!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Supplier $fornecedor)
     {
-        //
+        return view('fornecedores.show', compact('fornecedor'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Supplier $fornecedor)
     {
-        //
+        return view('fornecedores.edit', compact('fornecedor'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SupplierRequest $request, Supplier $fornecedor)
     {
-        //
+        $fornecedor->update($request->validated());
+        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor atualizado com sucesso!');
     }
 
     /**

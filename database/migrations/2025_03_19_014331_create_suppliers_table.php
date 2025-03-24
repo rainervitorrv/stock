@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cpf_cnpj')->unique();
             $table->string('cep');
             $table->string('address');
-            $table->string('number');
+            $table->string('number')->nullable();
             $table->string('complement')->nullable();
             $table->string('neighborhood');
             $table->string('city');

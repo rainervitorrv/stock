@@ -12,10 +12,6 @@
         </x-slot:button>
     </div>
 
-
-
-
-
     <form method="POST" id="edit-form" action="/fornecedores/{{ $fornecedor->id }}">
         @csrf
         @method('patch')

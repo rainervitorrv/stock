@@ -34,7 +34,7 @@ class SupplierController extends Controller
             [
                 'name_fantasy'  => 'required|string|max:255',
                 'business_name' => 'nullable|string|max:255',
-                'cpf_cnpj'      => 'required|string|min:11|max:14|unique:fornecedores',
+                'cpf_cnpj'      => 'required|string|min:11|max:14|unique:suppliers',
                 'type'          => 'required|in:Pessoa Física,Pessoa Jurídica',
                 'email'         => 'nullable|email|max:255',
                 'phone'         => 'nullable|string|max:255',
@@ -138,8 +138,10 @@ class SupplierController extends Controller
     /**
      * Destroy
      */
-    public function destroy(string $id)
+    public function destroy(Supplier $fornecedor)
     {
-        //
+        $fornecedor->delete();
+
+        return redirect()->route('fornecedores.index')->with('success', 'Fornecedor apagado com sucesso!');
     }
 }

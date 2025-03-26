@@ -22,26 +22,27 @@
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                 <x-nav-link href="{{ route('fornecedores.index') }}" :active="request()->is('fornecedores')">Fornecedores</x-nav-link>
+                <x-nav-link href="{{ route('categorias-movimentacao.index') }}" :active="request()->is('categorias-movimentacao')">Categorias de Movimentação</x-nav-link>
                 <x-nav-link href="{{ route('produtos.index') }}" :active="request()->is('produtos')">Produtos</x-nav-link>
                 <x-nav-link href="{{ route('categorias-produtos.index') }}" :active="request()->is('categorias')">Categorias</x-nav-link>
-                {{-- <x-nav-link href="{{ route('movimentacoes.index') }}" :active="request()->is('movimentacoes')">Movimentações</x-nav-link> --}}
+                <x-nav-link href="{{ route('movimentacoes.create') }}" :active="request()->is('movimentacoes')">Movimentação</x-nav-link>
                 {{-- <x-nav-link href="{{ route('usuarios.index') }}" :active="request()->is('usuarios')">Usuários</x-nav-link> --}}
               </div>
             </div>
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              @guest
+              {{-- @guest
                 <x-nav-link href="/login" :active="request()->is('login')">Entrar</x-nav-link>
                 <x-nav-link href="/register" :active="request()->is('register')">Registrar</x-nav-link>
-              @endguest
-              @auth
+              @endguest --}}
+              
                 <form method="POST" action="/logout">
                 @csrf
 
                   <x-form-button type="submit">Sair</x-form-button>
                 </form>
-              @endauth
+              
 
             </div>
           </div>

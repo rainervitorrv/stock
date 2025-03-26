@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\MovementCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +43,21 @@ Route::get('/categorias-produtos/{categoria}', [ProductCategoryController::class
 Route::get('/categorias-produtos/{categoria}/edit', [ProductCategoryController::class, 'edit'])->name('categorias-produtos.edit');
 Route::patch('/categorias-produtos/{categoria}', [ProductCategoryController::class, 'update'])->name('categorias-produtos.update');
 Route::delete('/categorias-produtos/{categoria}', [ProductCategoryController::class, 'destroy'])->name('categorias-produtos.destroy');
+
+//Para Movimentações de Estoque
+Route::get('/movimentacoes', [StockMovementController::class, 'create'])->name('movimentacoes.create');
+Route::post('/movimentacoes', [StockMovementController::class, 'store'])->name('movimentacoes.store');
+
+//Rota para categorias de movimentação
+Route::get('/categorias-movimentacao', [MovementCategoryController::class, 'index'])->name('categorias-movimentacao.index');
+Route::get('/categorias-movimentacao/create', [MovementCategoryController::class, 'create'])->name('categorias-movimentacao.create');
+Route::post('/categorias-movimentacao', [MovementCategoryController::class, 'store'])->name('categorias-movimentacao.store');
+
+Route::get('/categorias-movimentacao/{categoria}', [MovementCategoryController::class, 'show'])->name('categorias-movimentacao.show');
+Route::get('/categorias-movimentacao/{categoria}/edit', [MovementCategoryController::class, 'edit'])->name('categorias-movimentacao.edit');
+Route::patch('/categorias-movimentacao/{categoria}', [MovementCategoryController::class, 'update'])->name('categorias-movimentacao.update');
+Route::delete('/categorias-movimentacao/{categoria}', [MovementCategoryController::class, 'destroy'])->name('categorias-movimentacao.destroy');
+
+Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('stock-transactions.store');
+
 

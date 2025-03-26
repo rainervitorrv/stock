@@ -1,9 +1,9 @@
 <x-layout>
     <x-slot:heading>
-        Produtos
+        Categorias de Movimentacão
     </x-slot:heading>
     <x-slot:button>
-        <x-button.create-button href="{{ route('produtos.create') }}">Novo Produto</x-button.create-button>
+        <x-button.create-button href="{{ route('categorias-movimentacao.create') }}">Nova Categoria</x-button.create-button>
     </x-slot:button>
     
 
@@ -16,38 +16,22 @@
             <thead class="text-xs text-black-700 bg-gray-50 font-medium">
                 <tr>
                     <x-table.table-th>ID</x-table.table-th>
-                    <x-table.table-th>Nome</x-table.table-th>
-                    <x-table.table-th>SKU</x-table.table-th>
-                    <x-table.table-th>Cod. Barras</x-table.table-th>
-                    <x-table.table-th>Custo Unitário</x-table.table-th>
-                    <x-table.table-th>Estoque</x-table.table-th>
+                    <x-table.table-th>Categoria</x-table.table-th>
                     <x-table.table-th>Ação</x-table.table-th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($produtos as $produto)
+                @foreach ($categorias as $categoria)
                     <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200  hover:bg-gray-50 ">
                         <x-table.table-th scope="row"
                             class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">
-                            {{ $produto->id }}
+                            {{ $categoria->id }}
                         </x-table.table-th>
                         <x-table.table-row-td>
-                            {{ $produto->name }}
+                            {{ $categoria->name }}
                         </x-table.table-row-td>
                         <x-table.table-row-td>
-                            {{ $produto->sku }}
-                        </x-table.table-row-td>
-                        <x-table.table-row-td>
-                            {{ $produto->barcode }}
-                        </x-table.table-row-td>
-                        <x-table.table-row-td>
-                            R$ {{ $produto->cost_price }}
-                        </x-table.table-row-td>
-                        <x-table.table-row-td>
-                            {{ $produto->stock }}
-                        </x-table.table-row-td>
-                        <x-table.table-row-td>
-                            <a href="{{ route('produtos.show', ['produto' => $produto->id]) }}"
+                            <a href="{{ route('categorias-movimentacao.show', ['categoria' => $categoria->id]) }}"
                                 class="font-medium text-blue-600  hover:underline">Editar</a>
                         </x-table.table-row-td>
                     </tr>
@@ -56,6 +40,6 @@
         </table>
     </div>
     <div>
-        {{ $produtos->links() }}
+        {{ $categorias->links() }}
     </div>
 </x-layout>

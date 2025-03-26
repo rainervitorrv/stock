@@ -52,7 +52,7 @@ class ProductCategoryController extends Controller
             [
                 'name.required' => 'O nome da categoria é obrigatório',
                 'name.min' => 'O nome da categoria deve ter no mínimo 3 caracteres',
-                'name.max' => 'O nome da categoria deve ter no máximo 255 caracteres'
+                'name.max' => 'O nome da categoria deve ter no máximo 255 caracteres',
             ]
         );
 

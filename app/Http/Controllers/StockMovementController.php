@@ -2,63 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MovementCategory;
+use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class StockMovementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $suppliers = Supplier::all();
+        $categories = MovementCategory::all();
+        $products = Product::all();
+        
+        return view('movimentacoes.create', compact(
+            'suppliers',
+            'categories',
+            'products'
+        ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'movement_type' => 'required|in:entrada,saida',
+            'category_id' => 'required|exists:movement_categories,id',
+            'products' => 'required|array',
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|numeric|min:1'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Simulação de salvar a movimentação
+        return back()->with('success', 'Movimentação registrada com sucesso!');
     }
 }

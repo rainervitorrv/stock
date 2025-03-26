@@ -42,7 +42,7 @@
             <div>
                 <x-form.form-label for="category_id">Categoria</x-form.form-label>
                 <x-form.form-input id="category_id" name="category_id" class="cursor-not-allowed" 
-                    value="{{ $produto->category_id }}" readonly />
+                    value="{{ $produto->category->name }}" readonly />
                 <x-form-error name="category_id" />
             </div>
             <div>

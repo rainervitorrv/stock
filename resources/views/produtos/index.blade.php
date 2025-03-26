@@ -37,6 +37,9 @@
                             {{ $produto->sku }}
                         </x-table.table-row-td>
                         <x-table.table-row-td>
+                            {{ $produto->barcode }}
+                        </x-table.table-row-td>
+                        <x-table.table-row-td>
                             {{ $produto->stock }}
                         </x-table.table-row-td>
                         <x-table.table-row-td>

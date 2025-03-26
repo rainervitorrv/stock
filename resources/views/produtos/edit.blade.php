@@ -1,7 +1,7 @@
 <x-layout>
     <div class="flex sm:flex sm:justify-between">
         <x-slot:heading>
-            Editar: {{ $fornecedor->name_fantasy }}
+            Editar: {{ $produto->name }}
         </x-slot:heading>
         <x-slot:button>
             <div>
@@ -12,117 +12,69 @@
         </x-slot:button>
     </div>
 
-    <form method="POST" id="edit-form" action="/fornecedores/{{ $fornecedor->id }}">
+    <form method="POST" id="edit-form" action="{{ route('produtos.update', ['produto' => $produto->id]) }}">
         @csrf
         @method('patch')
 
-        <div class="pb-4 font-bold">
-            <h2>Dados Cadastrais</h2>
-        </div>
-
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <x-form.form-label for="name_fantasy">Nome Fantasia</x-form.form-label>
-                <x-form.form-input id="name_fantasy" name="name_fantasy" value="{{ $fornecedor->name_fantasy }}"
-                    required />
-                <x-form-error name="name_fantasy" />
+                <x-form.form-label for="name">Nome do Produto</x-form.form-label>
+                <x-form.form-input id="name" name="name" value="{{ $produto->name }}" required />
+                <x-form-error name="name" />
             </div>
             <div>
-                <x-form.form-label for="business_name">Razão Social</x-form.form-label>
-                <x-form.form-input id="business_name" name="business_name" value="{{ $fornecedor->business_name }}" />
-                <x-form-error name="business_name" />
+                <x-form.form-label for="sku">SKU</x-form.form-label>
+                <x-form.form-input id="sku" name="sku" value="{{ $produto->sku }}" />
+                <x-form-error name="sku" />
             </div>
             <div>
-                <x-form.form-label for="cpf_cnpj">CPF/CNPJ</x-form.form-label>
-                <x-form.form-input id="cpf_cnpj" name="cpf_cnpj" value="{{ $fornecedor->cpf_cnpj }}" required />
-                <x-form-error name="cpf_cnpj" />
+                <x-form.form-label for="barcode">Código de Barras</x-form.form-label>
+                <x-form.form-input id="barcode" name="barcode" value="{{ $produto->barcode }}" required />
+                <x-form-error name="barcode" />
             </div>
             <div>
-                <x-form.form-label for="type">Tipo</x-form.form-label>
-                <x-form-error name="type" />
-                <select name="type"
+                <x-form.form-label for="cost_price">Custo Unitário</x-form.form-label>
+                <x-form.form-input id="cost_price" name="cost_price" value="{{ $produto->cost_price }}" required />
+                <x-form-error name="cost_price" />
+            </div>
+            <div>
+                <x-form.form-label for="unit">Unidade de Medida</x-form.form-label>
+                <select name="unit" id="unit"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                    <option value="Pessoa Física" {{ $fornecedor->type == 'Pessoa Física' ? 'selected' : '' }}>Pessoa
-                        Física</option>
-                    <option value="Pessoa Jurídica" {{ $fornecedor->type == 'Pessoa Jurídica' ? 'selected' : '' }}>
-                        Pessoa Jurídica</option>
+                    <option value="UN" {{ $produto->unit == 'UN' ? 'selected' : '' }}>UN - Unidade</option>
+                    <option value="CX" {{ $produto->unit == 'CX' ? 'selected' : '' }}>CX - Caixa</option>
+                    <option value="M" {{ $produto->unit == 'M' ? 'selected' : '' }}>M - Metro</option>
+                    <option value="L" {{ $produto->unit == 'L' ? 'selected' : '' }}>L - Litro</option>
+                    <option value="KG" {{ $produto->unit == 'KG' ? 'selected' : '' }}>KG - Kilograma</option>
+                    <option value="TON" {{ $produto->unit == 'TON' ? 'selected' : '' }}>TON - Tonelada</option>
                 </select>
+                <x-form-error name="unit" />
             </div>
             <div>
-                <x-form.form-label for="email">E-mail</x-form.form-label>
-                <x-form.form-input type="email" id="email" name="email" value="{{ $fornecedor->email }}" />
-                <x-form-error name="email" />
+                <x-form.form-label for="category_id">Categoria</x-form.form-label>
+                <select name="category_id" id="category_id"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id }}" {{ $produto->category_id == $categoria->id ? 'selected' : '' }}>
+                            {{ $categoria->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-form-error name="category_id" />
             </div>
             <div>
-                <x-form.form-label for="phone">Telefone</x-form.form-label>
-                <x-form.form-input type="tel" id="phone" name="phone" value="{{ $fornecedor->phone }}" />
-                <x-form-error name="phone" />
+                <x-form.form-label for="stock">Estoque</x-form.form-label>
+                <x-form.form-input id="stock" name="stock" class="cursor-not-allowed"
+                    value="{{ $produto->stock }}" readonly/>
+                <x-form-error name="stock" />
             </div>
-        </div>
-
-        <div class="pb-4 font-bold">
-            <h2>Dados de Endereço</h2>
-        </div>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <x-form.form-label for="address">Endereço</x-form.form-label>
-                <x-form.form-input id="address" name="address" value="{{ $fornecedor->address }}" required />
-                <x-form-error name="address" />
-            </div>
-            <div class="grid gap-6 md:grid-cols-2">
-                <div>
-                    <x-form.form-label for="number">Número</x-form.form-label>
-                    <x-form.form-input id="number" name="number" value="{{ $fornecedor->number }}" />
-                    <x-form-error name="number" />
-                </div>
-                <div>
-                    <x-form.form-label for="complement">Complemento</x-form.form-label>
-                    <x-form.form-input id="complement" name="complement" value="{{ $fornecedor->complement }}" />
-                    <x-form-error name="complement" />
-                </div>
-            </div>
-
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
-                <div>
-                    <x-form.form-label for="neighborhood">Bairro</x-form.form-label>
-                    <x-form.form-input id="neighborhood" name="neighborhood" value="{{ $fornecedor->neighborhood }}"
-                        required />
-                    <x-form-error name="neighborhood" />
-                </div>
-                <div>
-                    <x-form.form-label for="city">Cidade</x-form.form-label>
-                    <x-form.form-input id="city" name="city" value="{{ $fornecedor->city }}" required />
-                    <x-form-error name="city" />
-                </div>
-            </div>
-            <div class="grid gap-6 mb-6 md:grid-cols-3">
-                <div>
-                    <x-form.form-label for="state">Estado</x-form.form-label>
-                    <x-form.form-input type="text" id="state" name="state" value="{{ $fornecedor->state }}"
-                        required />
-                    <x-form-error name="state" />
-                </div>
-                <div>
-                    <x-form.form-label for="country"
-                        class="block mb-2 text-sm font-medium text-gray-900">País</x-form.form-label>
-                    <x-form.form-input id="country" name="country" value="{{ $fornecedor->country }}" required />
-                    <x-form-error name="country" />
-                </div>
-                <div>
-                    <x-form.form-label for="cep"
-                        class="block mb-2 text-sm font-medium text-gray-900">CEP</x-form.form-label>
-                    <x-form.form-input id="cep" name="cep" value="{{ $fornecedor->cep }}" required
-                        maxlength="9" />
-                    <x-form-error name="cep" />
-                </div>
+                <x-form.form-label for="min_stock">Estoque Mínimo</x-form.form-label>
+                <x-form.form-input id="min_stock" name="min_stock" value="{{ $produto->min_stock }}" />
+                <x-form-error name="min_stock" />
             </div>
         </div>
-
-
     </form>
-    @foreach ($errors as $erro)
-        <span class="text-red-500">{{ $erro }}</span>
-    @endforeach
 
     <script>
         setTimeout(() => {
@@ -172,7 +124,7 @@
     </div>
 
     <form id="delete-form" class="hidden" method="POST"
-        action="{{ route('fornecedores.destroy', ['fornecedor' => $fornecedor->id]) }}">
+        action="{{ route('produtos.destroy', ['produto' => $produto->id]) }}">
         @csrf
         @method('delete')
     </form>

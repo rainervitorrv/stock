@@ -25,7 +25,7 @@
                 <x-nav-link href="{{ route('categorias-movimentacao.index') }}" :active="request()->is('categorias-movimentacao')">Categorias de Movimentação</x-nav-link>
                 <x-nav-link href="{{ route('produtos.index') }}" :active="request()->is('produtos')">Produtos</x-nav-link>
                 <x-nav-link href="{{ route('categorias-produtos.index') }}" :active="request()->is('categorias')">Categorias</x-nav-link>
-                <x-nav-link href="{{ route('movimentacoes.create') }}" :active="request()->is('movimentacoes')">Movimentação</x-nav-link>
+                <x-nav-link href="{{ route('movimentacoes.index') }}" :active="request()->is('movimentacoes')">Movimentação</x-nav-link>
                 {{-- <x-nav-link href="{{ route('usuarios.index') }}" :active="request()->is('usuarios')">Usuários</x-nav-link> --}}
               </div>
             </div>

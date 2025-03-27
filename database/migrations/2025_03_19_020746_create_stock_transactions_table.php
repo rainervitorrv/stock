@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('type');
             $table->foreignIdFor(MovementCategory::class);
-            $table->text('observation');
+            $table->text('observation')->nullable();
             $table->timestamps();
         });
     }

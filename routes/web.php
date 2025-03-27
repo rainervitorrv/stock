@@ -45,8 +45,11 @@ Route::patch('/categorias-produtos/{categoria}', [ProductCategoryController::cla
 Route::delete('/categorias-produtos/{categoria}', [ProductCategoryController::class, 'destroy'])->name('categorias-produtos.destroy');
 
 //Para Movimentações de Estoque
-Route::get('/movimentacoes', [StockMovementController::class, 'create'])->name('movimentacoes.create');
+Route::get('/movimentacoes', [StockMovementController::class, 'index'])->name('movimentacoes.index');
+Route::get('/movimentacoes/create', [StockMovementController::class, 'create'])->name('movimentacoes.create');
 Route::post('/movimentacoes', [StockMovementController::class, 'store'])->name('movimentacoes.store');
+Route::get('/movimentacoes/{movimentacao}', [StockMovementController::class, 'show'])->name('movimentacoes.show');
+Route::delete('/movimentacoes/{movimentacao}', [StockMovementController::class, 'destroy'])->name('movimentacoes.destroy');
 
 //Rota para categorias de movimentação
 Route::get('/categorias-movimentacao', [MovementCategoryController::class, 'index'])->name('categorias-movimentacao.index');

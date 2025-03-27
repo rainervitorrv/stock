@@ -34,7 +34,7 @@ class StockMovementController extends Controller
         $suppliers = Supplier::all();
         $categories = MovementCategory::all();
         $products = Product::all();
-        
+
         return view('movimentacoes.create', compact(
             'suppliers',
             'categories',
@@ -44,7 +44,6 @@ class StockMovementController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
             'movement_type' => 'required|in:entrada,saida',
@@ -54,10 +53,7 @@ class StockMovementController extends Controller
             'products.*.quantity' => 'required|numeric|min:1',
             'observation' => 'nullable|string'
         ]);
-        // foreach ($request->products as $product) {
-        //     dd($product['id']);
-        // }
-        
+
         $transaction = StockTransaction::create([
             'user_id' => '1',
             'supplier_id' => $request->supplier_id,
@@ -67,15 +63,45 @@ class StockMovementController extends Controller
             'observation' => $request->observation
         ]);
 
+        $errors = [];
         foreach ($request->products as $product) {
             StockMovement::create([
                 'stock_transaction_id' => $transaction->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity']
             ]);
+
+            $qtdProdutos = Product::find($product['id']);
+            try {
+                if ($request->movement_type === 'entrada') {
+                    $qtdProdutos->stock += $product['quantity'];
+                } else {
+                    if ($qtdProdutos->stock < $product['quantity']) {
+                        // Acumular os erros
+                        $errors[] = "Estoque insuficiente para o produto: {$qtdProdutos->name} - Quantidade solicitada: {$product['quantity']} - Estoque atual: {$qtdProdutos->stock}.";
+                    } else {
+                        $qtdProdutos->stock -= $product['quantity'];
+                    }
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
         }
-        return redirect()->route('categorias-movimentacao.index')->with('success', 'Movimentação registrada com sucesso!');
+
+        // Verificar se houve erros após o laço
+        if (!empty($errors)) {
+            return redirect()->back()->with('error', implode('', $errors));
+        }
+
+        // Se não houver erros, salvar todos os produtos
+        foreach ($request->products as $product) {
+            $qtdProdutos = Product::find($product['id']);
+            $qtdProdutos->save();
+        }
+
+        return redirect()->route('movimentacoes.index')->with('success', 'Movimentação registrada com sucesso!');
     }
+
     public function destroy(StockTransaction $movimentacao)
     {
         $movimentacao->delete();

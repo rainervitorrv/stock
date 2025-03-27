@@ -9,6 +9,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if(session('error'))
+            <div class="w-full bg-red-500 text-white p-2 rounded-md text-center mb-4">
+                {{session('error')}}
+            </div>
+        @endif
 
         <form action="{{ route('movimentacoes.store') }}" method="POST" class="space-y-4">
             @csrf
@@ -17,7 +22,6 @@
                 <div>
                     <label class="block text-gray-700 font-semibold">Fornecedor</label>
                     <select name="supplier_id" class="input-style">
-                        <option value="">Selecione...</option>
                         @foreach($suppliers as $supplier)
                             <option value="{{ $supplier->id }}">{{ $supplier->name_fantasy }}</option>
                         @endforeach
@@ -35,7 +39,6 @@
             <div>
                 <label class="block text-gray-700 font-semibold">Categoria</label>
                 <select name="category_id" class="input-style">
-                    <option value="">Selecione...</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
@@ -64,65 +67,86 @@
     </div>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById('search-product');
-    const addButton = document.getElementById('add-product');
-    const productList = document.getElementById('selected-products');
-    const products = @json($products);
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('search-product');
+            const addButton = document.getElementById('add-product');
+            const productList = document.getElementById('selected-products');
+            const products = @json($products);
 
-      // Adicionar cabeçalho da grid
-      const headerRow = document.createElement('div');
-    headerRow.classList.add('grid', 'grid-cols-4', 'gap-4', 'items-center', 'font-semibold', 'text-gray-700', 'bg-gray-200', 'p-2', 'rounded-t-md');
-    headerRow.innerHTML = `
-        <span>Nome do Produto (SKU)</span>
-        <span>Quantidade</span>
-        <span>Estoque Disponível</span>
-    `;
-    productList.appendChild(headerRow);
-
-    function addProduct() {
-        const searchValue = searchInput.value.toLowerCase();
-        const foundProduct = products.find(p => 
-            p.name.toLowerCase().includes(searchValue) || 
-            p.barcode?.toLowerCase() === searchValue ||
-            p.sku?.toLowerCase() === searchValue
-        );
-
-        if (foundProduct) {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="grid grid-cols-4 gap-4 items-center border p-2 rounded-md bg-gray-100">
-                    <span class="font-medium">${foundProduct.name} (${foundProduct.sku})</span>
-                    <input type="hidden" name="products[${foundProduct.id}][id]" value="${foundProduct.id}">
-                    <input type="number" name="products[${foundProduct.id}][quantity]" value="1" min="1"
-                        class="w-16 border p-1 text-center rounded-md">
-                    <span class="text-gray-700 font-semibold">${foundProduct.stock} un.</span>
-                    <button type="button" class="text-red-500 hover:text-red-700 remove-product">X</button>
-                </div>
+            // Adicionar cabeçalho da grid
+            const headerRow = document.createElement('div');
+            headerRow.classList.add('grid', 'grid-cols-5', 'gap-4', 'items-center', 'font-semibold', 'text-gray-700', 'bg-gray-200', 'p-2', 'rounded-t-md');
+            headerRow.innerHTML = `
+                <span>Nome do Produto (SKU)</span>
+                <span>Quantidade</span>
+                <span>Estoque Disponível</span>
+                <span>Aviso de Estoque</span>
             `;
-            productList.appendChild(li);
-            searchInput.value = "";
-        } else {
-            alert("Produto não encontrado!");
-        }
-    }
+            productList.appendChild(headerRow);
 
-    addButton.addEventListener('click', addProduct);
+            function addProduct() {
+                const searchValue = searchInput.value.trim().toLowerCase();
+                const foundProducts = products.filter(p => 
+                    p.name.toLowerCase().includes(searchValue) || 
+                    p.barcode?.toLowerCase() === searchValue ||
+                    p.sku?.toLowerCase() === searchValue
+                );
 
-    searchInput.addEventListener('keypress', function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            addProduct();
-        }
-    });
+                if (foundProducts.length === 1) {
+                    const foundProduct = foundProducts[0];
+                    addProductToList(foundProduct);
+                    searchInput.value = ""; // Clear input
+                } else if (foundProducts.length > 1) {
+                    alert("Selecione um produto da lista!");
+                } else {
+                    alert("Produto não encontrado!");
+                }
+            }
 
-    productList.addEventListener('click', function (e) {
-        if (e.target.classList.contains('remove-product')) {
-            e.target.closest('li').remove();
-        }
-    });
-});
+            function addProductToList(product) {
+                const li = document.createElement('li');
+                const lowStockWarning = product.stock <= product.minimum_stock ? 
+                    `<span class="text-yellow-600 text-sm">Atenção: Estoque mínimo atingido!</span>` : '';
 
+                li.innerHTML = `
+                    <div class="grid grid-cols-5 gap-4 items-center border p-2 rounded-md bg-gray-100">
+                        <span class="font-medium">${product.name} (${product.sku})</span>
+                        <input type="hidden" name="products[${product.id}][id]" value="${product.id}">
+                        <input type="number" name="products[${product.id}][quantity]" value="1" min="1"
+                            class="w-16 border p-1 text-center rounded-md" onchange="checkStock(${product.id}, this)">
+                        <span class="text-gray-700 font-semibold">${product.stock} un.</span>
+                        <span class="text-gray-700">${lowStockWarning}</span>
+                        <button type="button" class="text-red-500 hover:text-red-700 remove-product">X</button>
+                    </div>
+                `;
+                productList.appendChild(li);
+            }
+
+            function checkStock(productId, inputElement) {
+                const product = products.find(p => p.id == productId);
+                if (inputElement.value > product.stock) {
+                    alert("Quantidade inserida é maior do que o estoque disponível!");
+                }
+                if (inputElement.value <= product.minimum_stock) {
+                    alert("Estoque mínimo atingido!");
+                }
+            }
+
+            addButton.addEventListener('click', addProduct);
+
+            searchInput.addEventListener('keypress', function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    addProduct();
+                }
+            });
+
+            productList.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-product')) {
+                    e.target.closest('li').remove();
+                }
+            });
+        });
     </script>
 
     <style>

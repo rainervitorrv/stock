@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\UserController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -61,6 +62,10 @@ Route::get('/categorias-movimentacao/{categoria}/edit', [MovementCategoryControl
 Route::patch('/categorias-movimentacao/{categoria}', [MovementCategoryController::class, 'update'])->name('categorias-movimentacao.update');
 Route::delete('/categorias-movimentacao/{categoria}', [MovementCategoryController::class, 'destroy'])->name('categorias-movimentacao.destroy');
 
-Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('stock-transactions.store');
+//Tota para relatórios
+Route::get('/relatorios', function () {
+    $produtos = Product::latest()->paginate(20);
+    return view('relatorio.index', compact('produtos'));
+})->name('relatorios.index');
 
 

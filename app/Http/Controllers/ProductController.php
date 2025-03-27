@@ -40,7 +40,7 @@ class ProductController extends Controller
                 'category_id'   => 'required|exists:product_categories,id',
                 'stock'      => 'nullable|numeric|min:0',
                 'min_stock'  => 'nullable|numeric|min:0',
-                'cost_price' => 'required|numeric|min:0',
+                'cost_price' => 'required|regex:/^([1-9]\d*)([.,]\d{2})?$/',
             ],
             [
                 'name.required'      => 'O nome do produto é obrigatório.',
@@ -59,10 +59,11 @@ class ProductController extends Controller
                 'min_stock.numeric'  => 'O estoque mínimo deve ser um valor numérico.',
                 'min_stock.min'      => 'O estoque mínimo não pode ser negativo.',
                 'cost_price.required'=> 'O preço de custo é obrigatório.',
-                'cost_price.numeric' => 'O preço de custo deve ser um valor numérico.',
-                'cost_price.min'     => 'O preço de custo não pode ser negativo.',
+                'cost_price.regex' => 'O campo valor deve estar no formato correto, como 1 ou 1,00.',
             ]
         );
+
+        $attributes['cost_price'] = str_replace(',', '.', $attributes['cost_price']);
 
         Product::create($attributes);
         return redirect()->route('produtos.index')->with('success', 'Produto cadastrado com sucesso.');
@@ -98,7 +99,7 @@ class ProductController extends Controller
                 'unit'       => 'required|in:UN,CX,M,L,KG,TON',
                 'category_id'   => 'required|exists:product_categories,id',
                 'min_stock'  => 'nullable|numeric|min:0',
-                'cost_price' => 'required|numeric|min:0',
+                'cost_price' => 'required|regex:/^([1-9]\d*)([.,]\d{2})?$/',
             ],
             [
                 'name.required'      => 'O nome do produto é obrigatório.',
@@ -114,10 +115,11 @@ class ProductController extends Controller
                 'min_stock.numeric'  => 'O estoque mínimo deve ser um valor numérico.',
                 'min_stock.min'      => 'O estoque mínimo não pode ser negativo.',
                 'cost_price.required'=> 'O preço de custo é obrigatório.',
-                'cost_price.numeric' => 'O preço de custo deve ser um valor numérico.',
-                'cost_price.min'     => 'O preço de custo não pode ser negativo.',
+                'cost_price.regex' => 'O campo deve estar no formato correto, como 1 ou 1,00.'
             ]
         );
+
+        $attributes['cost_price'] = str_replace(',', '.', $attributes['cost_price']);
 
         $produto->update($attributes);
         return redirect()->route('produtos.index')->with('success', 'Produto atualizado com sucesso.');

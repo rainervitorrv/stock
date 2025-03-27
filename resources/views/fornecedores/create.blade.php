@@ -116,7 +116,7 @@
             <div>
                 <x-form.form-label for="cep" class="block mb-2 text-sm font-medium text-gray-900">CEP</x-form.form-label>
                 <x-form.form-input id="cep" name="cep"
-                    value="{{ old('fornecedor->cep') }}" required maxlength="9" />
+                    value="{{ old('cep') }}" required maxlength="9" />
                 <x-form-error name="cep" />
             </div>
         </div>

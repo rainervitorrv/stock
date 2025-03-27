@@ -41,7 +41,7 @@
                             {{ $produto->barcode }}
                         </x-table.table-row-td>
                         <x-table.table-row-td>
-                            R$ {{ $produto->cost_price }}
+                            R$ {{ number_format($produto->cost_price, 2, ',', '.') }}
                         </x-table.table-row-td>
                         <x-table.table-row-td>
                             {{ $produto->stock }}

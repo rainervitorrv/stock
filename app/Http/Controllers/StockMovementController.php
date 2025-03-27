@@ -8,6 +8,8 @@ use App\Models\StockMovement;
 use App\Models\StockTransaction;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StockMovementController extends Controller
 {
@@ -42,20 +44,23 @@ class StockMovementController extends Controller
         ));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'supplier_id' => 'required|exists:suppliers,id',
-            'movement_type' => 'required|in:entrada,saida',
-            'category_id' => 'required|exists:movement_categories,id',
-            'products' => 'required|array',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|numeric|min:1',
-            'observation' => 'nullable|string'
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'supplier_id' => 'required|exists:suppliers,id',
+        'movement_type' => 'required|in:entrada,saida',
+        'category_id' => 'required|exists:movement_categories,id',
+        'products' => 'required|array',
+        'products.*.id' => 'required|exists:products,id',
+        'products.*.quantity' => 'required|numeric|min:1',
+        'observation' => 'nullable|string'
+    ]);
+
+    try {
+        DB::beginTransaction();
 
         $transaction = StockTransaction::create([
-            'user_id' => '1',
+            'user_id' => Auth::id(),
             'supplier_id' => $request->supplier_id,
             'date' => now(),
             'type' => $request->movement_type,
@@ -63,44 +68,38 @@ class StockMovementController extends Controller
             'observation' => $request->observation
         ]);
 
-        $errors = [];
         foreach ($request->products as $product) {
+            $qtdProdutos = Product::find($product['id']);
+
+            if (!$qtdProdutos) {
+                throw new \Exception("Produto ID {$product['id']} não encontrado.");
+            }
+
+            if ($request->movement_type === 'saida' && $qtdProdutos->stock < $product['quantity']) {
+                throw new \Exception("Estoque insuficiente para {$qtdProdutos->name}. Quantidade solicitada: {$product['quantity']}, Estoque atual: {$qtdProdutos->stock}.");
+            }
+
             StockMovement::create([
                 'stock_transaction_id' => $transaction->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity']
             ]);
 
-            $qtdProdutos = Product::find($product['id']);
-            try {
-                if ($request->movement_type === 'entrada') {
-                    $qtdProdutos->stock += $product['quantity'];
-                } else {
-                    if ($qtdProdutos->stock < $product['quantity']) {
-                        // Acumular os erros
-                        $errors[] = "Estoque insuficiente para o produto: {$qtdProdutos->name} - Quantidade solicitada: {$product['quantity']} - Estoque atual: {$qtdProdutos->stock}.";
-                    } else {
-                        $qtdProdutos->stock -= $product['quantity'];
-                    }
-                }
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage());
-            }
-        }
-
-        // Verificar se houve erros após o laço
-        if (!empty($errors)) {
-            return redirect()->back()->with('error', implode('', $errors));
-        }
-
-        // Se não houver erros, salvar todos os produtos
-        foreach ($request->products as $product) {
-            $qtdProdutos = Product::find($product['id']);
+            // Atualiza estoque
+            $qtdProdutos->stock += ($request->movement_type === 'entrada') ? $product['quantity'] : -$product['quantity'];
             $qtdProdutos->save();
         }
 
+        DB::commit();
+
         return redirect()->route('movimentacoes.index')->with('success', 'Movimentação registrada com sucesso!');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', $e->getMessage());
     }
+}
+
 
     public function destroy(StockTransaction $movimentacao)
     {

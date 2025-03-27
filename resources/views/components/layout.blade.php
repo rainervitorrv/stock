@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vagas de emprego</title>
+    <title>Sistema de Controle de Estoque</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-
+    <link rel="icon" href="{{ asset('images/logo.svg') }}" type="image/png">
 </head>
 
 <body class="h-full">
@@ -18,19 +17,19 @@
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
                         <div class="shrink-0">
-                            <img class="size-8" src="{{ asset('images/logo.svg') }}"
-                                alt="Logo">
+                            <img class="size-8" src="{{ asset('images/logo.svg') }}" alt="Logo">
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
+                                <x-nav-link href="{{ route('usuarios.index') }}" :active="request()->is('usuarios')">Usuários</x-nav-link>
                                 <x-nav-link href="{{ route('fornecedores.index') }}"
                                     :active="request()->is('fornecedores')">Fornecedores</x-nav-link>
                                 <x-nav-link href="{{ route('produtos.index') }}" :active="request()->is('produtos')">Produtos</x-nav-link>
                                 <!-- Dropdown Categorias -->
                                 <div class="relative">
                                     <button
-                                        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                        class=" hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium text-white"
                                         data-dropdown-toggle="dropdown-categorias">
                                         Categorias
                                     </button>
@@ -47,8 +46,10 @@
                                     </div>
                                 </div>
 
-                                <x-nav-link href="{{ route('movimentacoes.index') }}" :active="request()->is('movimentacoes')">Movimentações</x-nav-link>
-                                <x-nav-link href="{{ route('relatorios.index') }}" :active="request()->is('relatorio')">Relatório</x-nav-link>
+                                <x-nav-link href="{{ route('movimentacoes.index') }}"
+                                    :active="request()->is('movimentacoes')">Movimentações</x-nav-link>
+                                <x-nav-link href="{{ route('relatorios.index') }}"
+                                    :active="request()->is('relatorio')">Relatório</x-nav-link>
                             </div>
                         </div>
                     </div>
@@ -56,7 +57,7 @@
                         <div class="ml-4 flex items-center md:ml-6">
                             <form method="POST" action="/logout">
                                 @csrf
-                                <x-form-button type="submit">Sair</x-form-button>
+                                <button type="submit" class="text-white font-semibold">Sair</button>
                             </form>
                         </div>
                     </div>
@@ -95,6 +96,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

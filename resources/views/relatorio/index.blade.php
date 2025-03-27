@@ -21,7 +21,7 @@
                     <tr 
                     class="odd:bg-white even:bg-gray-50 border-b border-gray-200 
                               hover:bg-gray-50 
-                              {{ $produto->stock <= $produto->min_stock ? 'text-red-700' : '' }}">
+                              {{ $produto->stock <= $produto->min_stock ? 'text-red-600' : '' }}">
                         
                               <x-table.table-row-td>
                             {{ $produto->name }}

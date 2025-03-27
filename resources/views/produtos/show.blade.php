@@ -29,7 +29,7 @@
             </div>
             <div>
                 <x-form.form-label for="cost_price">Custo Unitário</x-form.form-label>
-                <x-form.form-input id="cost_price" name="cost_price" class="cursor-not-allowed" 
+                <x-form.form-input id="cost_price" name="cost_price" class="cursor-not-allowed"
                     value="{{ $produto->cost_price }}" readonly />
                 <x-form-error name="cost_price" />
             </div>

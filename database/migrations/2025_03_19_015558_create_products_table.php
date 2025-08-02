@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\MovementCategory;
+use App\Models\ProductCategory;
+use App\Models\ProductUnit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,13 +17,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('unit', 50);
             $table->decimal('cost_price', 10, 2);
             $table->string('barcode')->unique();
-            $table->string('sku')->unique();
+            $table->string('sku')->unique()->nullable();
+            $table->foreignIdFor(ProductCategory::class, 'category_id');
+            $table->foreignIdFor(ProductUnit::class, 'unit_id');
             $table->integer('stock')->default(0);
             $table->integer('min_stock')->default(0);
-            $table->foreignIdFor(MovementCategory::class, 'category_id');
             $table->timestamps();
         });
     }

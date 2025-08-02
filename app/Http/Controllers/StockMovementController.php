@@ -48,7 +48,7 @@ public function store(Request $request)
 {
     $request->validate([
         'supplier_id' => 'required|exists:suppliers,id',
-        'movement_type' => 'required|in:entrada,saida',
+        'movement_type' => 'required|in:entry,exit',
         'category_id' => 'required|exists:movement_categories,id',
         'products' => 'required|array',
         'products.*.id' => 'required|exists:products,id',
@@ -75,7 +75,7 @@ public function store(Request $request)
                 throw new \Exception("Produto ID {$product['id']} não encontrado.");
             }
 
-            if ($request->movement_type === 'saida' && $qtdProdutos->stock < $product['quantity']) {
+            if ($request->movement_type === 'exit' && $qtdProdutos->stock < $product['quantity']) {
                 throw new \Exception("Estoque insuficiente para {$qtdProdutos->name}. Quantidade solicitada: {$product['quantity']}, Estoque atual: {$qtdProdutos->stock}.");
             }
 
@@ -86,7 +86,7 @@ public function store(Request $request)
             ]);
 
             // Atualiza estoque
-            $qtdProdutos->stock += ($request->movement_type === 'entrada') ? $product['quantity'] : -$product['quantity'];
+            $qtdProdutos->stock += ($request->movement_type === 'entry') ? $product['quantity'] : -$product['quantity'];
             $qtdProdutos->save();
         }
 

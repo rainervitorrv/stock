@@ -38,7 +38,7 @@ class ProductCategoryController extends Controller
     public function show(ProductCategory $categoria)
     {
         return view('categorias-produtos.show', compact('categoria'));
-    }   
+    }
     public function edit(ProductCategory $categoria)
     {
         return view('categorias-produtos.edit', compact('categoria'));

@@ -5,7 +5,7 @@
     <x-slot:button>
         <x-button.create-button href="{{ route('categorias-movimentacao.create') }}">Nova Categoria</x-button.create-button>
     </x-slot:button>
-    
+
 
     @if (session('success'))
         <x-form.form-alert-success />
@@ -17,6 +17,7 @@
                 <tr>
                     <x-table.table-th>ID</x-table.table-th>
                     <x-table.table-th>Categoria</x-table.table-th>
+                    <x-table.table-th>Tipo</x-table.table-th>
                     <x-table.table-th>Ação</x-table.table-th>
                 </tr>
             </thead>
@@ -29,6 +30,13 @@
                         </x-table.table-th>
                         <x-table.table-row-td>
                             {{ $categoria->name }}
+                        </x-table.table-row-td>
+                        <x-table.table-row-td>
+                            @if ($categoria->type == 'entry')
+                                <span>Entrada</span>
+                            @else
+                                <span>Saída</span>
+                            @endif
                         </x-table.table-row-td>
                         <x-table.table-row-td>
                             <a href="{{ route('categorias-movimentacao.show', ['categoria' => $categoria->id]) }}"

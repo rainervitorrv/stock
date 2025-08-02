@@ -1,7 +1,7 @@
 <x-layout>
     <div class="flex sm:flex sm:justify-between">
         <x-slot:heading>
-            Editar Categoria: {{ $categoria->name }}
+            Editar Unidade de Produto: {{ $unidade->name }}
         </x-slot:heading>
         <x-slot:button>
             <div>
@@ -12,29 +12,30 @@
         </x-slot:button>
     </div>
 
-    <form method="POST" id="edit-form" action="{{ route('categorias-movimentacao.update', ['categoria' => $categoria->id]) }}">
+    <form method="POST" id="edit-form" action="{{ route('unidades-produtos.update', ['unidade' => $unidade->id]) }}">
         @csrf
         @method('patch')
 
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <x-form.form-label for="name">Nome da Categoria</x-form.form-label>
-                <x-form.form-input id="name" name="name" value="{{ $categoria->name }}"
+                <x-form.form-label for="name">Nome da Unidade</x-form.form-label>
+                <x-form.form-input id="name" name="name" value="{{ $unidade->name }}"
                     required />
                 <x-form-error name="name" />
             </div>
             <div>
-                <x-form.form-label for="type">Tipo</x-form.form-label>
-                <x-form.form-select id="type" name="type">
-                    <option value="entry" {{ $categoria->type == 'entry' ? 'selected' : '' }}>Entrada</option>
-                    <option value="exit" {{ $categoria->type == 'exit' ? 'selected' : '' }}>Saída</option>
-                </x-form.form-select>
-                <x-form-error name="type" />
+                <x-form.form-label for="abbreviation">Abreviação</x-form.form-label>
+                <x-form.form-input id="abbreviation" name="abbreviation"
+                    value="{{ $unidade->abbreviation }}" required />
+                <x-form-error name="abbreviation" />
             </div>
         </div>
 
 
     </form>
+    @foreach ($errors as $erro)
+        <span class="text-red-500">{{ $erro }}</span>
+    @endforeach
 
     <script>
         setTimeout(() => {
@@ -84,7 +85,7 @@
     </div>
 
     <form id="delete-form" class="hidden" method="POST"
-        action="{{ route('categorias-movimentacao.destroy', ['categoria' => $categoria->id]) }}">
+        action="{{ route('unidades-produtos.destroy', ['unidade' => $unidade->id]) }}">
         @csrf
         @method('delete')
     </form>

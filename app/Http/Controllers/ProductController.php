@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductUnit;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -23,7 +24,8 @@ class ProductController extends Controller
     public function create()
     {
         $categorias = ProductCategory::all();
-        return view('produtos.create', compact('categorias'));
+        $unidades = ProductUnit::all();
+        return view('produtos.create', compact('categorias', 'unidades'));
     }
 
     /**
@@ -36,7 +38,7 @@ class ProductController extends Controller
                 'name'       => 'required|string|max:255',
                 'sku'        => 'nullable|string|max:100|unique:products,sku',
                 'barcode'    => 'required|string|max:100|unique:products,barcode',
-                'unit'       => 'required|in:UN,CX,M,L,KG,TON',
+                'unit_id'       => 'required',
                 'category_id'   => 'required|exists:product_categories,id',
                 'stock'      => 'nullable|numeric|min:0',
                 'min_stock'  => 'nullable|numeric|min:0',
@@ -51,7 +53,6 @@ class ProductController extends Controller
                 'barcode.max'        => 'O código de barras não pode ter mais de 100 caracteres.',
                 'barcode.unique'     => 'Este código de barras já está cadastrado.',
                 'unit.required'      => 'A unidade de medida é obrigatória.',
-                'unit.in'            => 'A unidade de medida selecionada é inválida.',
                 'category_id.required'  => 'A categoria é obrigatória.',
                 'category_id.exists'    => 'A categoria selecionada não existe.',
                 'stock.numeric'      => 'O estoque deve ser um valor numérico.',
@@ -83,7 +84,8 @@ class ProductController extends Controller
     public function edit(Product $produto)
     {
         $categorias = ProductCategory::all();
-        return view('produtos.edit', compact('produto', 'categorias'));
+        $unidades = ProductUnit::all();
+        return view('produtos.edit', compact('produto', 'categorias', 'unidades'));
     }
 
     /**
@@ -96,7 +98,7 @@ class ProductController extends Controller
                 'name'       => 'required|string|max:255',
                 'sku'        => 'nullable|string|max:100',
                 'barcode'    => 'required|string|max:100',
-                'unit'       => 'required|in:UN,CX,M,L,KG,TON',
+                'unit_id'       => 'required|exists:product_units,id',
                 'category_id'   => 'required|exists:product_categories,id',
                 'min_stock'  => 'nullable|numeric|min:0',
                 'cost_price' => 'required|regex:/^([1-9]\d*)([.,]\d{2})?$/',
@@ -107,8 +109,7 @@ class ProductController extends Controller
                 'sku.max'            => 'O SKU não pode ter mais de 100 caracteres.',
                 'barcode.required'   => 'O código de barras é obrigatório.',
                 'barcode.max'        => 'O código de barras não pode ter mais de 100 caracteres.',
-                'unit.required'      => 'A unidade de medida é obrigatória.',
-                'unit.in'            => 'A unidade de medida selecionada é inválida.',
+                'unit_id.required'      => 'A unidade de medida é obrigatória.',
                 'category_id.required'  => 'A categoria é obrigatória.',
                 'category_id.exists'    => 'A categoria selecionada não existe.',
                 'stock.min'          => 'O estoque não pode ser negativo.',

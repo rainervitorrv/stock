@@ -23,11 +23,14 @@ class MovementCategoryController extends Controller
         $attributes = $request->validate(
             [
                 'name' => 'required|min:3|max:255',
+                'type' => 'required|in:entry,exit'
             ],
             [
                 'name.required' => 'O nome da categoria é obrigatório',
                 'name.min' => 'O nome da categoria deve ter no mínimo 3 caracteres',
                 'name.max' => 'O nome da categoria deve ter no máximo 255 caracteres',
+                'type.required' => 'O tipo da categoria é obrigatório',
+                'type.in' => 'O tipo da categoria deve ser "entrada" ou "saída"',
             ]
         );
 
@@ -38,7 +41,7 @@ class MovementCategoryController extends Controller
     public function show(MovementCategory $categoria)
     {
         return view('categorias-movimentacao.show', compact('categoria'));
-    }   
+    }
     public function edit(MovementCategory $categoria)
     {
         return view('categorias-movimentacao.edit', compact('categoria'));
@@ -47,12 +50,15 @@ class MovementCategoryController extends Controller
     {
         $attributes = $request->validate(
             [
-                'name' => 'required|min:3|max:255'
+                'name' => 'required|min:3|max:255',
+                'type' => 'required|in:entry,exit'
             ],
             [
                 'name.required' => 'O nome da categoria é obrigatório',
                 'name.min' => 'O nome da categoria deve ter no mínimo 3 caracteres',
-                'name.max' => 'O nome da categoria deve ter no máximo 255 caracteres'
+                'name.max' => 'O nome da categoria deve ter no máximo 255 caracteres',
+                'type.required' => 'O tipo da categoria é obrigatório',
+                'type.in' => 'O tipo da categoria deve ser "entrada" ou "saída"',
             ]
         );
 

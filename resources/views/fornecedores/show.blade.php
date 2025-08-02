@@ -11,7 +11,7 @@
     <div class="pb-4 font-bold">
         <h2>Dados Cadastrais</h2>
     </div>
-    
+
     <div class="grid gap-6 mb-6 md:grid-cols-2">
         <div>
             <label for="name_fantasy" class="block mb-2 text-sm font-medium text-gray-900">Nome Fantasia</label>

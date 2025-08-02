@@ -129,6 +129,27 @@
     @endforeach
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cpfCnpjInput = document.getElementById('cpf_cnpj');
+            cpfCnpjInput.addEventListener('input', function(e) {
+                let value = cpfCnpjInput.value.replace(/\D/g, '');
+
+                if (value.length <= 11) {
+                    // CPF: 000.000.000-00
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                } else {
+                    // CNPJ: 00.000.000/0000-00
+                    value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+                    value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                    value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                    value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                }
+                cpfCnpjInput.value = value;
+            });
+        });
+
         setTimeout(() => {
             const alert = document.getElementById('alert-success');
             if (alert) {

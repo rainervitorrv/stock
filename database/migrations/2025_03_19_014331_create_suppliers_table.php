@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('country');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('is_client')->default(false);
+            $table->boolean('is_supplier')->default(false);
             $table->timestamps();
         });
     }

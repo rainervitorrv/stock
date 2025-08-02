@@ -31,19 +31,18 @@
             </div>
             <div>
                 <x-form.form-label for="cost_price">Custo Unitário</x-form.form-label>
-                <x-form.form-input id="cost_price" name="cost_price" value="{{ old('cost_price') }}" required />
+                <x-form.form-input id="cost_price" placeholder="R$ 0,00" name="cost_price" value="{{ old('cost_price') }}" required />
                 <x-form-error name="cost_price" />
             </div>
             <div>
-                <x-form.form-label for="unit">Unidade de Medida</x-form.form-label>
-                <select name="unit" id="unit"
+                <x-form.form-label for="unit_id">Unidade de Medida</x-form.form-label>
+                <select name="unit_id" id="unit_id"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                    <option value="UN" {{ old('unit') == 'UN' ? 'selected' : '' }}>UN - Unidade</option>
-                    <option value="CX" {{ old('unit') == 'CX' ? 'selected' : '' }}>CX - Caixa</option>
-                    <option value="M" {{ old('unit') == 'M' ? 'selected' : '' }}>M - Metro</option>
-                    <option value="L" {{ old('unit') == 'L' ? 'selected' : '' }}>L - Litro</option>
-                    <option value="KG" {{ old('unit') == 'KG' ? 'selected' : '' }}>KG - Kilograma</option>
-                    <option value="TON" {{ old('unit') == 'TON' ? 'selected' : '' }}>TON - Tonelada</option>
+                    @foreach ($unidades as $unidade)
+                        <option value="{{ $unidade->id }}" {{ old('unit') == $unidade->id ? 'selected' : '' }}>
+                            {{ $unidade->name }} ({{ $unidade->abbreviation }})
+                        </option>
+                    @endforeach
                 </select>
                 <x-form-error name="unit" />
             </div>

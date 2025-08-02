@@ -24,7 +24,7 @@
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                                 <x-nav-link href="{{ route('usuarios.index') }}" :active="request()->is('usuarios')">Usuários</x-nav-link>
                                 <x-nav-link href="{{ route('fornecedores.index') }}"
-                                    :active="request()->is('fornecedores')">Fornecedores</x-nav-link>
+                                    :active="request()->is('fornecedores')">Pessoas</x-nav-link>
                                 <x-nav-link href="{{ route('produtos.index') }}" :active="request()->is('produtos')">Produtos</x-nav-link>
                                 <!-- Dropdown Categorias -->
                                 <div class="relative">
@@ -42,6 +42,8 @@
                                             <a href="{{ route('categorias-movimentacao.index') }}"
                                                 class="text-gray-700 block px-4 py-2 text-sm">Categorias de
                                                 Movimentação</a>
+                                            <a href="{{ route('unidades-produtos.index') }}"
+                                                class="text-gray-700 block px-4 py-2 text-sm">Unidades de Produtos</a>
                                         </div>
                                     </div>
                                 </div>

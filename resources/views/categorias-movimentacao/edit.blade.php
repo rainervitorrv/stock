@@ -23,7 +23,15 @@
                     required />
                 <x-form-error name="name" />
             </div>
-        </div>    
+            <div>
+                <x-form.form-label for="type">Tipo</x-form.form-label>
+                <x-form.form-select id="type" name="type">
+                    <option value="entry" {{ $categoria->type == 'entry' ? 'selected' : '' }}>Entrada</option>
+                    <option value="exit" {{ $categoria->type == 'exit' ? 'selected' : '' }}>Saída</option>
+                </x-form.form-select>
+                <x-form-error name="type" />
+            </div>
+        </div>
 
 
     </form>

@@ -38,15 +38,14 @@
                 <x-form-error name="cost_price" />
             </div>
             <div>
-                <x-form.form-label for="unit">Unidade de Medida</x-form.form-label>
-                <select name="unit" id="unit"
+                <x-form.form-label for="unit_id">Unidade de Medida</x-form.form-label>
+                <select name="unit_id" id="unit_id"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                    <option value="UN" {{ $produto->unit == 'UN' ? 'selected' : '' }}>UN - Unidade</option>
-                    <option value="CX" {{ $produto->unit == 'CX' ? 'selected' : '' }}>CX - Caixa</option>
-                    <option value="M" {{ $produto->unit == 'M' ? 'selected' : '' }}>M - Metro</option>
-                    <option value="L" {{ $produto->unit == 'L' ? 'selected' : '' }}>L - Litro</option>
-                    <option value="KG" {{ $produto->unit == 'KG' ? 'selected' : '' }}>KG - Kilograma</option>
-                    <option value="TON" {{ $produto->unit == 'TON' ? 'selected' : '' }}>TON - Tonelada</option>
+                    @foreach ($unidades as $unidade)
+                        <option value="{{ $unidade->abbreviation }}" {{ $produto->unit == $unidade->abbreviation ? 'selected' : '' }}>
+                            {{ $unidade->name }} ({{ $unidade->abbreviation }})
+                        </option>
+                    @endforeach
                 </select>
                 <x-form-error name="unit" />
             </div>

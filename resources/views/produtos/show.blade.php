@@ -23,7 +23,7 @@
             </div>
             <div>
                 <x-form.form-label for="barcode">Código de Barras</x-form.form-label>
-                <x-form.form-input id="barcode" name="barcode" class="cursor-not-allowed" 
+                <x-form.form-input id="barcode" name="barcode" class="cursor-not-allowed"
                     value="{{ $produto->barcode }}" readonly />
                 <x-form-error name="barcode" />
             </div>
@@ -41,7 +41,7 @@
             </div>
             <div>
                 <x-form.form-label for="category_id">Categoria</x-form.form-label>
-                <x-form.form-input id="category_id" name="category_id" class="cursor-not-allowed" 
+                <x-form.form-input id="category_id" name="category_id" class="cursor-not-allowed"
                     value="{{ $produto->category->name }}" readonly />
                 <x-form-error name="category_id" />
             </div>
@@ -53,7 +53,7 @@
             </div>
             <div>
                 <x-form.form-label for="min_stock">Estoque Mínimo</x-form.form-label>
-                <x-form.form-input id="min_stock" name="min_stock" class="cursor-not-allowed" 
+                <x-form.form-input id="min_stock" name="min_stock" class="cursor-not-allowed"
                     value="{{ $produto->min_stock }}" readonly />
                 <x-form-error name="min_stock" />
             </div>

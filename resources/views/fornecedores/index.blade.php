@@ -1,11 +1,11 @@
 <x-layout>
     <x-slot:heading>
-        Fornecedores
+        Fornecedores e Clientes
     </x-slot:heading>
     <x-slot:button>
-        <x-button.create-button href="{{ route('fornecedores.create') }}">Novo Fornecedor</x-button.create-button>
+        <x-button.create-button href="{{ route('fornecedores.create') }}">Nova Pessoa</x-button.create-button>
     </x-slot:button>
-    
+
 
     @if (session('success'))
         <x-form.form-alert-success />
@@ -32,13 +32,13 @@
                         <x-table.table-row-td>
                             {{ $fornecedor->name_fantasy }}
                         </x-table.table-row-td>
-                        
+
                         <x-table.table-row-td>
-                            {{ strlen($fornecedor->cpf_cnpj) == 11 
-                                ? preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "$1.$2.$3-$4", $fornecedor->cpf_cnpj) 
+                            {{ strlen($fornecedor->cpf_cnpj) == 11
+                                ? preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "$1.$2.$3-$4", $fornecedor->cpf_cnpj)
                                 : preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "$1.$2.$3/$4-$5", $fornecedor->cpf_cnpj) }}
                         </x-table.table-row-td>
-                        
+
                         <x-table.table-row-td>
                             {{ $fornecedor->email }}
                         </x-table.table-row-td>

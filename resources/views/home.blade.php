@@ -3,8 +3,6 @@
         Dashboard
     </x-slot:heading>
 
-
-
     <h1 class="text-2xl font-semibold"><span class="font-bold">{{ Auth::user()->name }}</span>, seja bem-vindo(a)!</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-6">
@@ -36,7 +34,8 @@
             <ul class="list-disc pl-5 mt-2 space-y-2">
                 @foreach (\App\Models\StockTransaction::latest()->take(10)->get() as $movimentacao)
                     <li class="text-gray-700">{{ ucfirst($movimentacao->type) }}
-                        ({{ $movimentacao->created_at->format('d/m/Y H:i') }}) por {{ $movimentacao->user->name }})
+                        ({{ $movimentacao->created_at->format('d/m/Y H:i') }})
+                        por {{ $movimentacao->user->name }}
                     </li>
                 @endforeach
             </ul>

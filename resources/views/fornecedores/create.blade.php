@@ -1,40 +1,40 @@
 <x-layout>
     <div class="flex sm:flex sm:justify-between">
         <x-slot:heading>
-            Cadastrar Fornecedor
+            Cadastrar Fornecedor ou Cliente
         </x-slot:heading>
         <x-slot:button>
             <div>
                 <x-button.save-button form="edit-form">Salvar</x-button.save-button>
-            </div>  
+            </div>
         </x-slot:button>
     </div>
-    
+
 <form method="POST" id="edit-form" action=" {{ route('fornecedores.store') }} ">
     @csrf
 
     <div class="pb-4 font-bold">
         <h2>Dados Cadastrais</h2>
     </div>
-    
+
     <div class="grid gap-6 mb-6 md:grid-cols-2">
         <div>
             <x-form.form-label for="name_fantasy">Nome Fantasia</x-form.form-label>
-            <x-form.form-input 
+            <x-form.form-input
                 id="name_fantasy" name="name_fantasy"
                 value="{{ old('name_fantasy') }}" required/>
                 <x-form-error name="name_fantasy" />
         </div>
         <div>
             <x-form.form-label for="business_name">Razão Social</x-form.form-label>
-            <x-form.form-input 
+            <x-form.form-input
                 id="business_name" name="business_name"
                 value="{{ old('business_name') }}" />
                 <x-form-error name="business_name" />
         </div>
         <div>
             <x-form.form-label for="cpf_cnpj">CPF/CNPJ</x-form.form-label>
-            <x-form.form-input 
+            <x-form.form-input
             id="cpf_cnpj" name="cpf_cnpj"
                 value="{{ old('cpf_cnpj') }}" required />
             <x-form-error name="cpf_cnpj" />
@@ -122,4 +122,27 @@
         </div>
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cpfCnpjInput = document.getElementById('cpf_cnpj');
+    cpfCnpjInput.addEventListener('input', function(e) {
+        let value = cpfCnpjInput.value.replace(/\D/g, '');
+
+        if (value.length <= 11) {
+            // CPF: 000.000.000-00
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        } else {
+            // CNPJ: 00.000.000/0000-00
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+        }
+        cpfCnpjInput.value = value;
+    });
+});
+</script>
 </x-layout>

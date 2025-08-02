@@ -6,21 +6,28 @@
         <x-slot:button>
             <div>
                 <x-button.save-button form="edit-form">Salvar</x-button.save-button>
-            </div>  
+            </div>
         </x-slot:button>
     </div>
-    
+
 <form method="POST" id="edit-form" action=" {{ route('categorias-movimentacao.store') }} ">
     @csrf
 
     <div class="grid gap-6 mb-6 md:grid-cols-2">
         <div>
             <x-form.form-label for="name">Nome da Categoria</x-form.form-label>
-            <x-form.form-input 
+            <x-form.form-input
                 id="name" name="name"
                 value="{{ old('name') }}" required/>
                 <x-form-error name="name" />
         </div>
-    </div>    
+        <div>
+            <x-form.form-label for="type">Tipo</x-form.form-label>
+            <x-form.form-select id="type" name="type">
+                <option value="entry" {{ old('type') == 'entry' ? 'selected' : '' }}>Entrada</option>
+                <option value="exit" {{ old('type') == 'exit' ? 'selected' : '' }}>Saída</option>
+            </x-form.form-select>
+        </div>
+    </div>
 </form>
 </x-layout>

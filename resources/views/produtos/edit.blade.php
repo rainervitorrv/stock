@@ -42,7 +42,8 @@
                 <select name="unit_id" id="unit_id"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                     @foreach ($unidades as $unidade)
-                        <option value="{{ $unidade->abbreviation }}" {{ $produto->unit == $unidade->abbreviation ? 'selected' : '' }}>
+                        <option value="{{ $unidade->id }}"
+                            {{ $produto->unit->id == $unidade->id ? 'selected' : '' }}>
                             {{ $unidade->name }} ({{ $unidade->abbreviation }})
                         </option>
                     @endforeach
@@ -54,7 +55,8 @@
                 <select name="category_id" id="category_id"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                     @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" {{ $produto->category_id == $categoria->id ? 'selected' : '' }}>
+                        <option value="{{ $categoria->id }}"
+                            {{ $produto->category_id == $categoria->id ? 'selected' : '' }}>
                             {{ $categoria->name }}
                         </option>
                     @endforeach
@@ -64,7 +66,7 @@
             <div>
                 <x-form.form-label for="stock">Estoque</x-form.form-label>
                 <x-form.form-input id="stock" name="stock" class="cursor-not-allowed"
-                    value="{{ $produto->stock }}" readonly/>
+                    value="{{ $produto->stock }}" readonly />
                 <x-form-error name="stock" />
             </div>
             <div>
@@ -84,6 +86,16 @@
                 setTimeout(() => alert.remove(), 500);
             }
         }, 3000); // Fecha após 3 segundos
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('cost_price');
+            input.addEventListener('input', function(e) {
+                let value = input.value.replace(/\D/g, '');
+                value = (value / 100).toFixed(2) + '';
+                value = value.replace('.', ',');
+                input.value = value;
+            });
+        });
     </script>
 
     <div id="popup-modal" tabindex="-1"

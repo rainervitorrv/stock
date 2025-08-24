@@ -1,7 +1,7 @@
 <x-layout>
     <div class="flex sm:flex sm:justify-between">
         <x-slot:heading>
-            Detalhes da Movimentação - #{{ $movimentacao->id }} - {{ ucfirst($movimentacao->type) }}
+            Detalhes da Movimentação - #{{ $movimentacao->id }} - {{ $movimentacao->type == 'entry' ? 'Entrada' : 'Saída' }}
         </x-slot:heading>
         <x-slot:button>
             <div>

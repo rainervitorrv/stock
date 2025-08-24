@@ -21,7 +21,7 @@
             </div>
             <div>
                 <x-form.form-label for="sku">SKU</x-form.form-label>
-                <x-form.form-input id="sku" name="sku" value="{{ old('sku') }}" />
+                <x-form.form-input id="sku" name="sku" placeholder="Opcional" value="{{ old('sku') }}" />
                 <x-form-error name="sku" />
             </div>
             <div>
@@ -59,13 +59,13 @@
                 <x-form-error name="category_id" />
             </div>
             <div>
-                <x-form.form-label for="stock">Estoque</x-form.form-label>
-                <x-form.form-input id="stock" name="stock" value="{{ old('stock') }}" />
+                <x-form.form-label for="stock">Estoque Inicial</x-form.form-label>
+                <x-form.form-input id="stock" name="stock" placeholder="0" value="{{ old('stock') }}" />
                 <x-form-error name="stock" />
             </div>
             <div>
                 <x-form.form-label for="min_stock">Estoque Mínimo</x-form.form-label>
-                <x-form.form-input id="min_stock" name="min_stock" value="{{ old('min_stock') }}" />
+                <x-form.form-input id="min_stock" name="min_stock" placeholder="0" value="{{ old('min_stock') }}" />
                 <x-form-error name="min_stock" />
             </div>
         </div>

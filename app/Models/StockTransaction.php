@@ -22,4 +22,8 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(MovementCategory::class, 'movement_category_id');
     }
+
+    public function products() {
+        return $this->hasMany(MovementCategory::class, 'movement_category_id');
+    }
 }

@@ -36,7 +36,8 @@
             <div>
                 <x-form.form-label for="unit">Unidade de Medida</x-form.form-label>
                 <x-form.form-input id="unit" name="unit" class="cursor-not-allowed"
-                    value="{{ $produto->unit }}" readonly />
+                    value="{{ $produto->unit->name }} ({{ $produto->unit->abbreviation }})" readonly>
+                </x-form.form-input>
                 <x-form-error name="unit" />
             </div>
             <div>

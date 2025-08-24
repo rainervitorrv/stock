@@ -33,7 +33,7 @@
             </x-slot:title>
             <ul class="list-disc pl-5 mt-2 space-y-2">
                 @foreach (\App\Models\StockTransaction::latest()->take(10)->get() as $movimentacao)
-                    <li class="text-gray-700">{{ ucfirst($movimentacao->type) }}
+                    <li class="text-gray-700">{{ $movimentacao->type == 'entry' ? 'Entrada' : 'Saída' }}
                         ({{ $movimentacao->created_at->format('d/m/Y H:i') }})
                         por {{ $movimentacao->user->name }}
                     </li>

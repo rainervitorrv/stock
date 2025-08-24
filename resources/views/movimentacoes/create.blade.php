@@ -114,7 +114,7 @@
 
                 li.innerHTML = `
                     <div class="grid grid-cols-5 gap-4 items-center border p-2 rounded-md bg-gray-100">
-                        <span class="font-medium">${product.name} (${product.sku})</span>
+                        <span class="font-medium">${product.name}</span>
                         <input type="hidden" name="products[${product.id}][id]" value="${product.id}">
                         <input type="number" name="products[${product.id}][quantity]" value="1" min="1"
                             class="w-16 border p-1 text-center rounded-md" onchange="checkStock(${product.id}, this)">

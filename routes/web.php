@@ -42,7 +42,7 @@ Route::post('/logout', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
-        return view('home');
+        return view('dashboard.home');
     })->name('home');
 
     Route::resource('fornecedores', SupplierController::class)->parameter('fornecedores', 'fornecedor');

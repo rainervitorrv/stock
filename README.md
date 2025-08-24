@@ -46,30 +46,32 @@ A aplicação busca oferecer uma solução simples, organizada e escalável para
 
 <h2>Instalação</h2>
 <p>Siga os passos abaixo para configurar e executar o sistema:</p>
-<pre><code># 1. Clonar o repositório
+<pre><code>
+
+## 1. Clonar o repositório
 git clone https://github.com/rainervitorrv/stock.git
 cd stock
 
-# 2. Instalar as dependências PHP
+## 2. Instalar as dependências PHP
 composer install
 
-# 3. Criar e configurar o arquivo .env
+## 3. Criar e configurar o arquivo .env
 cp .env.example .env
 php artisan key:generate
 
-# 4. Configurar o banco de dados no arquivo .env
+## 4. Configurar o banco de dados no arquivo .env
 
-# 5. Executar as migrations (e seeders, se disponíveis)
+## 5. Executar as migrations (e seeders, se disponíveis)
 php artisan migrate --seed
 
-# 6. Criar o link simbólico para armazenamento (se necessário)
+## 6. Criar o link simbólico para armazenamento (se necessário)
 php artisan storage:link
 
-# 7. Instalar dependências do front-end
+## 7. Instalar dependências do front-end
 npm install
 npm run dev
 
-# 8. Iniciar o servidor local
+## 8. Iniciar o servidor local
 php artisan serve
 </code></pre>
 <p>Após esses passos, o sistema estará disponível em <code>http://127.0.0.1:8000</code>.</p>

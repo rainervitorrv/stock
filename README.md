@@ -61,17 +61,14 @@ php artisan key:generate
 
 ## 4. Configurar o banco de dados no arquivo .env
 
-## 5. Executar as migrations (e seeders, se disponíveis)
+## 5. Executar as migrations
 php artisan migrate --seed
 
-## 6. Criar o link simbólico para armazenamento (se necessário)
-php artisan storage:link
-
-## 7. Instalar dependências do front-end
+## 6. Instalar dependências do front-end
 npm install
 npm run dev
 
-## 8. Iniciar o servidor local
+## 7. Iniciar o servidor local
 php artisan serve
 </code></pre>
 <p>Após esses passos, o sistema estará disponível em <code>http://127.0.0.1:8000</code>.</p>
